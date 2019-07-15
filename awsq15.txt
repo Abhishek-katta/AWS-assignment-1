@@ -1,0 +1,36 @@
+Create a Lambda Function(below is the Lambda Function named Lambdasns)
+
+from __future__ import print_function
+  
+import json
+import boto3
+  
+print('Loading function')
+  
+def lambda_handler(event, context):
+  
+    # Parse the JSON message 
+    eventText = json.dumps(event)
+  
+    # Print the parsed JSON message to the console; you can view this text in the Monitoring tab in the Lambda console or in the CloudWatch Logs console
+    print('Received event: ', eventText)
+  
+    # Create an SNS client
+    sns = boto3.client('sns')
+  
+    # Publish a message to the specified topic
+    response = sns.publish (
+      TopicArn = 'arn:aws:sns:us-east-1:488599217855:lambdasns',
+      Message = eventText
+    )
+  
+    print(response)
+
+
+
+Create an Sns Topic
+subscribe your phone number to the sns topic
+
+give the arn of the Sns topic in the above lambda code TopicArn(TopicArn = 'arn:aws:sns:us-east-1:488599217855:lambdasns')
+
+now, whenever the lambda Function is Run i.e. Tested we get a text message to our phone number whatever message is given in the lambda configure test event.

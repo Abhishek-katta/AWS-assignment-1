@@ -1,0 +1,43 @@
+1- Create an instance from the available ubuntu Ami's.
+2- Select storage option and vpc ,subnets.
+3- In the SG allow HTTP,SSH and NFS inbound Rules.
+4- Launch your instance
+5- Create an EFS.
+6- MAke sure that the SG of the EC2 Instance and the efs are the same.
+7- Connect the EC2 instance through Mobaxterm using SSH.
+
+Connect to your EC2 instance and install the Apache web server.
+$ sudo yum -y install httpd
+
+Start the service.
+$ sudo service httpd start
+
+Create a mount point
+Create a subdirectory efs-mount-point under /var/www/html
+$ sudo mkdir /var/www/html/efs-mount-point
+
+Mount your Amazon EFS file system. You need to update the following mount command using the EFS mount helper utility by providing your file system ID
+$ sudo mount -t efs <your EFS ID>:/ /var/www/html/efs-mount-point
+
+Create a sample html file and change the directory
+$ cd /var/www/html/efs-mount-point 
+
+Make a subdirectory for sampledir and change the ownership. And change directory so you can create files in the sampledir subdirectory
+$  sudo mkdir sampledir  
+$  sudo chown  ec2-user sampledir
+$  sudo chmod -R o+r sampledir
+$  cd sampledir
+
+Create a sample test.html file
+$ echo "<html><h1>Hello Abhishek ,from Amazon EFS</h1></html>" > test.html
+
+Open a browser window and enter the URL to access the file (it is the public DNS name of the EC2 instance followed by the file name)
+http://EC2-instance-public-DNS/efs-mount-point/sampledir/test.html
+
+
+
+
+NOW, 
+Create an snapshot of the above EC2 instance using the AWS Snapshot console and Create a volume from this instance
+Choose a different region and create an instance
+Attach the created volume to it.

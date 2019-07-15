@@ -1,0 +1,24 @@
+The strategy here is to block access from ip addresses which are not in the range of the company's set of ip addresses
+
+{
+    "Id": "S3Policy_1",
+    "Statement": [
+        {
+            "Sid": "IPDeny",
+            "Effect": "Deny",
+            "Principal": {
+                "AWS": "*"
+            },
+            "Action": "s3:*",
+            "Resource": "arn:aws:s3:::my_bucket/*",
+            "Condition": {
+                "NotIpAddress": {
+                    "aws:SourceIp":  [
+                    "185.0.0.0/24",
+                    "186.0.0.0/24"
+                ]
+                }
+            }
+        }
+    ]
+}
